@@ -2,21 +2,18 @@
 import polars as pl
 import matplotlib.pyplot as plt
 import numpy as np
-import os
 
 # Make the graphs a bit prettier, and bigger
 plt.style.use("ggplot")
 plt.rcParams["figure.figsize"] = (15, 3)
 plt.rcParams["font.family"] = "sans-serif"
 
-# Get the directory of the current script
-current_dir = os.getcwd()
 # %%
 # By the end of this chapter, we're going to have downloaded all of Canada's weather data for 2012, and saved it to a CSV. We'll do this by downloading it one month at a time, and then combining all the months together.
 # Here's the temperature every hour for 2012!
 
 # Read the CSV file
-weather_2012_final = pl.read_csv(f"{current_dir}/data/weather_2012.csv").with_columns(pl.col("date_time").str.to_datetime()).sort("date_time")
+weather_2012_final = pl.read_csv("../data/weather_2012.csv").with_columns(pl.col("date_time").str.to_datetime()).sort("date_time")
 
 # %%# Create the plot
 plt.figure(figsize=(15, 6))

@@ -210,4 +210,4 @@ weather_2012 = pl.concat(data_by_month_aligned)
 print(weather_2012.head())
 # %%
 # Now, let's save the data.
-weather_2012.write_csv(f"{current_dir}/data/weather_2012.csv")# %%
+weather_2012.write_csv("../data/weather_2012.csv")

@@ -1,6 +1,8 @@
 # %%
 import pandas as pd
 import matplotlib.pyplot as plt
+import polars as pl
+import os
 
 
 # %%
@@ -14,12 +16,15 @@ import matplotlib.pyplot as plt
 broken_df = pd.read_csv("../data/bikes.csv", encoding="ISO-8859-1")
 
 # TODO: please load the data with the Polars library (do not forget to import Polars at the top of the script) and call it pl_broken_df
+current_dir = os.getcwd()
+pl_broken_df = pl.read_csv(f"{current_dir}/data/bikes.csv", has_header=True, encoding="ISO-8859.1")
 
 # %%
 # Look at the first 3 rows
 broken_df[:3]
 
 # TODO: do the same with your polars data frame, pl_broken_df
+pl_broken_df.head(3)
 
 # %%
 # You'll notice that this is totally broken! `read_csv` has a bunch of options that will let us fix that, though. Here we'll
@@ -41,7 +46,22 @@ fixed_df = pd.read_csv(
 fixed_df[:3]
 
 # TODO: do the same (or similar) with polars
+pl_fixed_df = pl.read_csv(
+    f"{current_dir}/data/bikes.csv",
+    separator=";",
+    encoding="latin1"
+)
+pl_fixed_df = pl_fixed_df.with_columns(
+    pl.col("Date").str.strptime(pl.Date,"%d/%m/%Y").alias("Parsed_Date")
+)
+pl_fixed_df = pl_fixed_df.with_columns(
+    pl.col("Parsed_Date").dt.strftime("%d/%m/%Y").alias("Index_Date")  # Format to DD/MM/YYYY
+)
+print(pl_fixed_df)
 
+pl_sorted_df=pl_fixed_df.sort("Index_Date")
+
+print(pl_sorted_df.head(3))
 
 # %%
 # Selecting a column
@@ -51,6 +71,7 @@ fixed_df[:3]
 fixed_df["Berri 1"]
 
 # TODO: how would you do this with a Polars data frame?
+pl_sorted_df.select("Berri 1")
 
 
 # %%
@@ -58,7 +79,13 @@ fixed_df["Berri 1"]
 fixed_df["Berri 1"].plot()
 
 # TODO: how would you do this with a Polars data frame?
+import matplotlib.pyplot as plt
 
+plt.plot(pl_sorted_df.select("Berri 1"))
+plt.title("Berri 1 plot")
+plt.xlabel("Date")
+plt.ylabel("Berri 1 People Count")
+plt.show()
 
 # %%
 # We can also plot all the columns just as easily. We'll make it a little bigger, too.
@@ -67,3 +94,10 @@ fixed_df["Berri 1"].plot()
 fixed_df.plot(figsize=(15, 10))
 
 # TODO: how would you do this with a Polars data frame? With Polars data frames you might have to use the Seaborn library and it mmight not work out of the box as with pandas.
+plt.figure(figsize=(15, 10))
+
+plt.plot(pl_sorted_df.select("Berri 1"))
+plt.title("Berri 1 plot")
+plt.xlabel("Date")
+plt.ylabel("Berri 1 People Count")
+plt.show()

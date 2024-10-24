@@ -2,8 +2,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import polars as pl
-import os
-
 
 # %%
 # Reading data from a csv file
@@ -16,8 +14,7 @@ import os
 broken_df = pd.read_csv("../data/bikes.csv", encoding="ISO-8859-1")
 
 # TODO: please load the data with the Polars library (do not forget to import Polars at the top of the script) and call it pl_broken_df
-current_dir = os.getcwd()
-pl_broken_df = pl.read_csv(f"{current_dir}/data/bikes.csv", has_header=True, encoding="ISO-8859.1")
+pl_broken_df = pl.read_csv("../data/bikes.csv", has_header=True, encoding="ISO-8859.1")
 
 # %%
 # Look at the first 3 rows
@@ -79,8 +76,6 @@ pl_sorted_df.select("Berri 1")
 fixed_df["Berri 1"].plot()
 
 # TODO: how would you do this with a Polars data frame?
-import matplotlib.pyplot as plt
-
 plt.plot(pl_sorted_df.select("Berri 1"))
 plt.title("Berri 1 plot")
 plt.xlabel("Date")

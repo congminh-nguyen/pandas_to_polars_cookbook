@@ -42,7 +42,7 @@ weather_mar2012 = pl.read_csv(
     url_march,
     encoding="latin1",
     try_parse_dates=True
-).sort("Date/Time (LST)")
+)
 
 # Display the first few rows
 print(weather_mar2012.head())
